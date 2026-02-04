@@ -143,14 +143,6 @@ TMDB_API_KEY=your_api_key_here
 - **Film Bulunamadı**: Film adının doğru yazıldığından emin olun
 - **Yavaş Yükleme**: İnternet bağlantısını ve API limitlerini kontrol edin
 
-## 🤝 Katkı
-
-İstekler ve hata bildirimleri için GitHub Issues kullanabilirsiniz.
-
-## 📄 Lisans
-
-Bu proje MIT Lisansı altında dağıtılmaktadır.
-
 ---
 
 **Film Öneri Sistemi** - Sinema evreninde kaybolmayın! 🎬✨
