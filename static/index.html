@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film Öneri</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo">
+            <span class="logo-icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="2"/>
+                    <line x1="7" y1="2" x2="7" y2="22"/>
+                    <line x1="17" y1="2" x2="17" y2="22"/>
+                    <line x1="2" y1="12" x2="22" y2="12"/>
+                    <line x1="2" y1="7" x2="7" y2="7"/>
+                    <line x1="2" y1="17" x2="7" y2="17"/>
+                    <line x1="17" y1="7" x2="22" y2="7"/>
+                    <line x1="17" y1="17" x2="22" y2="17"/>
+                </svg>
+            </span>
+            <span class="logo-text">Film Öneri</span>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="hero-inner" id="heroInner">
+                <div class="searched-film-card" id="searchedFilmCard"></div>
+                <div class="search-content">
+                    <h1 class="main-title">Beğendiğin Filme Benzer Öneriler</h1>
+                    <p class="subtitle">Bir film seçin, size benzeyen filmleri listeleyelim. Aşağıya yazıp öneri alın.</p>
+
+                    <div class="search-box">
+                        <div class="search-input-wrapper">
+                            <div class="input-container">
+                                <div class="input-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <input type="text" id="movieInput" placeholder="Film adı yazın..." autocomplete="off">
+                                <button type="button" id="clearButton" class="clear-button" aria-label="Temizle">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div id="autocompleteDropdown" class="autocomplete-dropdown"></div>
+                        </div>
+                        <button type="button" id="searchBtn" class="search-button">
+                            <span>Keşfe Çık</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <p id="errorMsg" class="error-msg" aria-live="polite"></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="resultsSection" class="results-section" hidden>
+            <h2 id="resultsTitle" class="results-title"></h2>
+            <div id="recommendedGrid" class="movie-grid"></div>
+        </section>
+
+        <section id="loadingSection" class="loading-section" hidden>
+            <div class="spinner"></div>
+            <p>Öneriler yükleniyor...</p>
+        </section>
+    </main>
+
+    <!-- Film Detay Modalı -->
+    <div id="movieModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle" class="modal-title"></h3>
+                <button id="closeModal" class="modal-close" aria-label="Kapat">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-poster-container">
+                    <img id="modalPoster" src="" alt="" class="modal-poster">
+                </div>
+                <div class="modal-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Tür:</span>
+                        <span id="modalGenres" class="detail-value">Yükleniyor...</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Yayın Tarihi:</span>
+                        <span id="modalReleaseDate" class="detail-value">Yükleniyor...</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Süre:</span>
+                        <span id="modalRuntime" class="detail-value">Yükleniyor...</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">IMDb Puanı:</span>
+                        <span id="modalRating" class="detail-value">Yükleniyor...</span>
+                    </div>
+                    <div class="detail-row full-width">
+                        <span class="detail-label">Özet:</span>
+                        <p id="modalOverview" class="detail-overview">Yükleniyor...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="closeModalBtn" class="modal-btn">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Anahtarınızı burada yapılandırabilirsiniz -->
+    <script>
+        // API yapılandırması
+        const API_CONFIG = {
+            // OMDb API anahtarınızı buraya ekleyin (https://www.omdbapi.com/apikey.aspx)
+            OMDB_API_KEY: 'YOUR_OMDB_API_KEY_HERE',
+            // Veya TMDb API anahtarınız (https://www.themoviedb.org/settings/api)
+            TMDB_API_KEY: 'YOUR_TMDB_API_KEY_HERE',
+            // Hangi API'yi kullanmak istediğinizi seçin: 'omdb' veya 'tmdb'
+            PREFERRED_API: 'omdb'
+        };
+    </script>
+
+    <script src="/js/app.js"></script>
+
+    <!-- JavaScript kodu için inline kısa bir çözüm (eğer app.js'de sorun varsa) -->
+    <script>
+        // Bu script otomatik tamamlama için geçici bir çözüm
+        document.addEventListener('DOMContentLoaded', function() {
+            const movieInput = document.getElementById('movieInput');
+            const clearButton = document.getElementById('clearButton');
+            const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+
+            if (movieInput && clearButton) {
+                // Clear button görünürlüğü
+                movieInput.addEventListener('input', function() {
+                    if (this.value.length > 0) {
+                        clearButton.classList.add('visible');
+                    } else {
+                        clearButton.classList.remove('visible');
+                    }
+
+                    // Otomatik tamamlama için (sadece 2 karakterden fazla yazıldığında)
+                    if (this.value.length >= 2) {
+                        showSampleAutocomplete();
+                    } else {
+                        autocompleteDropdown.classList.remove('show');
+                        autocompleteDropdown.innerHTML = '';
+                    }
+                });
+
+                // Clear button işlevi
+                clearButton.addEventListener('click', function() {
+                    movieInput.value = '';
+                    movieInput.focus();
+                    clearButton.classList.remove('visible');
+                    if (autocompleteDropdown) {
+                        autocompleteDropdown.classList.remove('show');
+                        autocompleteDropdown.innerHTML = '';
+                    }
+                });
+
+                // Input focus olduğunda dropdown'ı göster
+                movieInput.addEventListener('focus', function() {
+                    if (this.value.length >= 2) {
+                        showSampleAutocomplete();
+                    }
+                });
+
+                // Input'tan focus kaybolduğunda dropdown'ı gizle
+                movieInput.addEventListener('blur', function() {
+                    setTimeout(() => {
+                        if (autocompleteDropdown) {
+                            autocompleteDropdown.classList.remove('show');
+                        }
+                    }, 200);
+                });
+            }
+
+            // Örnek otomatik tamamlama verileri
+            function showSampleAutocomplete() {
+                if (!autocompleteDropdown) return;
+
+                const searchTerm = movieInput.value.toLowerCase();
+                const sampleMovies = [
+                    { id: 1, title: "Batman", year: "2022", poster: null, imdbRating: "8.3" },
+                    { id: 2, title: "Batman Begins", year: "2005", poster: null, imdbRating: "8.2" },
+                    { id: 3, title: "Batman Returns", year: "1992", poster: null, imdbRating: "7.0" },
+                    { id: 4, title: "The Batman", year: "2022", poster: null, imdbRating: "7.8" },
+                    { id: 5, title: "Batman v Superman: Dawn of Justice", year: "2016", poster: null, imdbRating: "6.4" },
+                    { id: 6, title: "Batman Forever", year: "1995", poster: null, imdbRating: "5.4" },
+                    { id: 7, title: "Batman & Robin", year: "1997", poster: null, imdbRating: "3.8" }
+                ];
+
+                // Arama terimine göre filtrele
+                const filteredMovies = sampleMovies.filter(movie =>
+                    movie.title.toLowerCase().includes(searchTerm)
+                );
+
+                if (filteredMovies.length > 0) {
+                    autocompleteDropdown.innerHTML = '';
+
+                    filteredMovies.forEach(movie => {
+                        const item = document.createElement('div');
+                        item.className = 'autocomplete-item';
+                        item.dataset.id = movie.id;
+
+                        // Film adını vurgula
+                        let highlightedTitle = movie.title;
+                        if (searchTerm) {
+                            const regex = new RegExp(`(${searchTerm})`, 'gi');
+                            highlightedTitle = movie.title.replace(regex, '<span class="highlight">$1</span>');
+                        }
+
+                        // IMDB puanı yıldız görseli
+                        const ratingStars = getRatingStars(movie.imdbRating);
+
+                        item.innerHTML = `
+                            ${movie.poster ?
+                                `<img src="${movie.poster}" alt="${movie.title}" class="movie-poster-small">` :
+                                '<div class="movie-poster-small" style="background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #999;"><i class="fas fa-film"></i></div>'}
+                            <div class="movie-info-small">
+                                <div class="movie-title-small">${highlightedTitle}</div>
+                                <div class="movie-meta-small">
+                                    <span class="movie-year-small">${movie.year}</span>
+                                    <span class="movie-rating-small">
+                                        <i class="fas fa-star" style="color: #ffd700; margin-right: 4px;"></i>
+                                        ${movie.imdbRating}
+                                    </span>
+                                </div>
+                            </div>
+                        `;
+
+                        // Tıklama olayı
+                        item.addEventListener('click', function() {
+                            movieInput.value = movie.title;
+                            clearButton.classList.add('visible');
+                            autocompleteDropdown.classList.remove('show');
+                        });
+
+                        autocompleteDropdown.appendChild(item);
+                    });
+
+                    autocompleteDropdown.classList.add('show');
+                } else {
+                    autocompleteDropdown.classList.remove('show');
+                }
+            }
+
+            // Puan için yıldız görseli oluşturma (isteğe bağlı)
+            function getRatingStars(rating) {
+                const numRating = parseFloat(rating);
+                const fullStars = Math.floor(numRating / 2);
+                const halfStar = (numRating / 2) % 1 >= 0.5;
+
+                let stars = '';
+                for (let i = 0; i < fullStars; i++) {
+                    stars += '<i class="fas fa-star" style="color: #ffd700;"></i>';
+                }
+                if (halfStar) {
+                    stars += '<i class="fas fa-star-half-alt" style="color: #ffd700;"></i>';
+                }
+                return stars;
+            }
+        });
+    </script>
+</body>
+</html>

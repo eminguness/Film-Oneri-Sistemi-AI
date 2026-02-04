@@ -1,0 +1,1182 @@
+:root {
+    --bg-deep: #4A2E70;
+    --bg-input: rgba(97, 75, 135, 0.7);
+    --bg-card: rgba(97, 75, 135, 0.6);
+    --accent: #8A5CF6;
+    --accent-hover: #9d6ff8;
+    --accent-glow: rgba(138, 92, 246, 0.4);
+    --text: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.9);
+    --radius: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    --shadow-glow: 0 8px 24px rgba(138, 92, 246, 0.3);
+    --gradient: linear-gradient(135deg, #8A5CF6 0%, #6C4BD9 100%);
+    --gradient-hover: linear-gradient(135deg, #9d6ff8 0%, #7d5ce6 100%);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    line-height: 1.5;
+    color: var(--text);
+    background-color: var(--bg-deep);
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* === Header: sol üst Film Öneri + ikon === */
+.app-header {
+    padding: 1.25rem 1.5rem;
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-icon {
+    display: inline-flex;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: var(--text);
+}
+
+.logo-text {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* === Ana içerik alanı === */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem 2rem;
+}
+
+/* === Hero: başlık + arama (ve isteğe poster) === */
+.hero {
+    margin-bottom: 2rem;
+}
+
+.hero-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.5rem;
+}
+
+/* Sonuç varken: poster solda, metin + arama sağda */
+.hero-inner.has-results {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+    gap: 2rem;
+}
+
+.search-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.main-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.9) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    max-width: 600px;
+    line-height: 1.6;
+}
+
+/* === GÜNCELLENMİŞ ARAMA KUTUSU TASARIMI === */
+.search-box {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    position: relative;
+    background: rgba(97, 75, 135, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.search-box:focus-within {
+    border-color: rgba(138, 92, 246, 0.3);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), var(--shadow-glow);
+    transform: translateY(-2px);
+}
+
+.search-input-wrapper {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+}
+
+/* === YENİ INPUT TASARIMI === */
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-lg);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.input-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    padding: 2px;
+    background: linear-gradient(135deg, rgba(138, 92, 246, 0.8) 0%, rgba(97, 75, 135, 0.8) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.input-container:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(138, 92, 246, 0.2);
+}
+
+.input-container:focus-within::before {
+    background: var(--gradient);
+}
+
+.input-icon {
+    padding: 0 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+#movieInput {
+    flex: 1;
+    min-width: 200px;
+    padding: 1.125rem 0.5rem 1.125rem 0;
+    font-size: 1.1rem;
+    color: var(--text);
+    background: transparent;
+    border: none;
+    outline: none;
+    font-weight: 500;
+    width: 100%;
+}
+
+#movieInput::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 400;
+}
+
+.clear-button {
+    padding: 0 1rem;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: none;
+    transition: color 0.2s;
+    opacity: 0.7;
+}
+
+.clear-button:hover {
+    color: var(--text);
+    opacity: 1;
+}
+
+.clear-button.visible {
+    display: block;
+}
+
+/* === YENİ BUTON TASARIMI === */
+.search-button {
+    padding: 1.125rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--gradient);
+    border: none;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 15px rgba(138, 92, 246, 0.3);
+}
+
+.search-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.search-button:hover {
+    background: var(--gradient-hover);
+    box-shadow: 0 8px 25px rgba(138, 92, 246, 0.4);
+    transform: translateY(-2px);
+}
+
+.search-button:hover::before {
+    left: 100%;
+}
+
+.search-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(138, 92, 246, 0.3);
+}
+
+.search-button i {
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.search-button:hover i {
+    transform: translateX(4px);
+}
+
+/* === GÜNCELLENMİŞ: Otomatik Tamamlama Dropdown === */
+.autocomplete-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: rgba(74, 46, 112, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    backdrop-filter: blur(20px);
+    display: none;
+    animation: dropdownFadeIn 0.2s ease;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.autocomplete-dropdown.show {
+    display: block;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-thumb {
+    background: var(--gradient);
+    border-radius: 4px;
+}
+
+/* GÜNCELLENMİŞ: Otomatik tamamlama öğesi */
+.autocomplete-item {
+    padding: 14px 20px;
+    cursor: pointer;
+    color: var(--text);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+}
+
+.autocomplete-item:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-item:hover {
+    background: rgba(138, 92, 246, 0.15);
+}
+
+.autocomplete-item.active {
+    background: rgba(138, 92, 246, 0.25);
+}
+
+/* GÜNCELLENMİŞ: Küçük film posteri */
+.movie-poster-small {
+    width: 40px;
+    height: 60px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+/* Gerçek resim için */
+.movie-poster-small img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Fallback ikonu için */
+.movie-poster-small i {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Spinner için */
+.movie-poster-small .fa-spinner {
+    color: var(--accent);
+}
+
+.movie-info-small {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.movie-title-small {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-spacing: normal;
+    letter-spacing: normal;
+    line-height: 1.3;
+    text-align: left;
+}
+
+/* YENİ: Otomatik tamamlama meta bilgileri */
+.movie-meta-small {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+}
+
+.movie-year-small {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    text-align: left;
+}
+
+/* YENİ: Otomatik tamamlamada IMDb puanı */
+.autocomplete-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255, 215, 0, 0.1);
+    padding: 2px 8px;
+    border-radius: 12px;
+    color: #FFD700;
+    font-weight: 600;
+    font-size: 0.8rem;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.autocomplete-rating i {
+    font-size: 0.7rem;
+}
+
+/* ÖNEMLİ DÜZELTME: Highlight edilen kısım için */
+.autocomplete-item .highlight {
+    color: var(--accent);
+    font-weight: 700;
+    background: rgba(138, 92, 246, 0.1);
+    padding: 0 1px;
+    border-radius: 2px;
+    display: inline;
+    white-space: nowrap;
+    word-break: keep-all;
+}
+
+/* === Yükleniyor göstergesi dropdown için === */
+.autocomplete-loading {
+    padding: 24px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.loading-dots {
+    display: inline-block;
+    margin-left: 8px;
+}
+
+.loading-dots span {
+    animation: dotPulse 1.5s infinite;
+    opacity: 0;
+}
+
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+.error-msg {
+    margin-top: 1rem;
+    color: #ff9d9d;
+    font-size: 0.95rem;
+    min-height: 1.4em;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 157, 157, 0.1);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 157, 157, 0.2);
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.error-msg.show {
+    display: block;
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* === Aranan film posteri (sol tarafta büyük) === */
+.searched-film-card {
+    display: none;
+    flex-shrink: 0;
+}
+
+.searched-film-card.has-poster {
+    display: block;
+}
+
+.searched-film {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.searched-film-poster {
+    width: 200px;
+    max-width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    display: block;
+    box-shadow: var(--shadow);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.searched-film-poster:hover {
+    transform: scale(1.05);
+}
+
+.searched-film-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    text-align: center;
+    max-width: 200px;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius);
+    backdrop-filter: blur(10px);
+}
+
+/* === Yükleniyor === */
+.loading-section {
+    text-align: center;
+    padding: 4rem;
+    color: var(--text-muted);
+}
+
+.loading-section p {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* === Sonuçlar: "X için öneriler" + 5 poster === */
+.results-section {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.results-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2rem;
+    padding: 1rem 0;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.results-title .film-name {
+    color: var(--accent);
+    font-weight: 700;
+    font-style: italic;
+    background: rgba(138, 92, 246, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
+}
+
+/* === FİLM KARTI TASARIMI === */
+.movie-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.movie-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    padding: 2px;
+    background: linear-gradient(135deg, transparent 30%, rgba(138, 92, 246, 0.3) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), var(--shadow-glow);
+}
+
+.movie-card:hover::before {
+    opacity: 1;
+}
+
+.movie-card img {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.movie-card:hover img {
+    transform: scale(1.05);
+}
+
+.movie-info {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.movie-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    min-height: 2.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.movie-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.movie-genres {
+    color: var(--accent);
+    font-weight: 600;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    line-height: 1.2;
+}
+
+.genre-tag {
+    background: rgba(138, 92, 246, 0.2);
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    border: 1px solid rgba(138, 92, 246, 0.3);
+}
+
+.movie-year-rating {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-muted);
+    gap: 8px;
+}
+
+.movie-year {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.movie-rating {
+    color: #FFD700;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.movie-rating i {
+    font-size: 0.8rem;
+}
+
+/* YENİ: Puan yükleniyor durumu */
+.rating-loading {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+/* YENİ: Puan sayısı */
+.rating-number {
+    font-weight: 700;
+    margin-left: 2px;
+}
+
+/* YENİ: Puan yok durumu */
+.no-rating {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+.movie-overview {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    margin-top: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* === Film Detay Modalı === */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1001;
+}
+
+.modal.show {
+    display: block;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    position: relative;
+    background: linear-gradient(135deg, rgba(74, 46, 112, 0.95) 0%, rgba(97, 75, 135, 0.95) 100%);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+    max-width: 900px;
+    width: 90%;
+    max-height: 90vh;
+    margin: 5vh auto;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: modalSlideIn 0.4s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-40px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.75rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.modal-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--text);
+    margin: 0;
+    padding-right: 3rem;
+    background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.9) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.modal-close {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--text);
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    display: flex;
+    padding: 2rem;
+    gap: 2.5rem;
+    overflow-y: auto;
+    max-height: calc(90vh - 160px);
+}
+
+.modal-poster-container {
+    flex-shrink: 0;
+}
+
+.modal-poster {
+    width: 280px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.detail-row {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+}
+
+.detail-row.full-width {
+    flex-direction: column;
+}
+
+.detail-label {
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 140px;
+    flex-shrink: 0;
+    font-size: 1rem;
+}
+
+.detail-value {
+    color: var(--text);
+    flex: 1;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.detail-overview {
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-top: 0.75rem;
+    font-size: 1rem;
+}
+
+.modal-footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.3);
+    text-align: right;
+    backdrop-filter: blur(10px);
+}
+
+.modal-btn {
+    padding: 0.875rem 2rem;
+    background: var(--gradient);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    box-shadow: 0 4px 15px rgba(138, 92, 246, 0.3);
+}
+
+.modal-btn:hover {
+    background: var(--gradient-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(138, 92, 246, 0.4);
+}
+
+/* Responsive modal */
+@media (max-width: 768px) {
+    .modal-body {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .modal-poster {
+        width: 200px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    .modal-poster-container {
+        text-align: center;
+    }
+
+    .detail-row {
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .detail-label {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 500px) {
+    .modal-content {
+        width: 95%;
+        margin: 2.5vh auto;
+    }
+
+    .modal-header {
+        padding: 1.25rem;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-title {
+        font-size: 1.3rem;
+    }
+}
+
+/* === Responsive === */
+@media (max-width: 900px) {
+    .hero-inner.has-results {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .movie-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+
+    .movie-title {
+        font-size: 0.85rem;
+    }
+
+    .movie-meta {
+        font-size: 0.75rem;
+    }
+
+    .movie-overview {
+        font-size: 0.7rem;
+        -webkit-line-clamp: 2;
+    }
+
+    .main-title {
+        font-size: 1.8rem;
+    }
+
+    .search-box {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .search-box {
+        flex-direction: column;
+    }
+
+    .search-input-wrapper {
+        width: 100%;
+    }
+
+    .search-button {
+        width: 100%;
+        padding: 1.25rem;
+    }
+
+    .autocomplete-item {
+        padding: 12px 16px;
+    }
+
+    .movie-poster-small {
+        width: 36px;
+        height: 54px;
+    }
+}
+
+@media (max-width: 600px) {
+    .movie-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+
+    .movie-title {
+        font-size: 0.85rem;
+        min-height: 2.2em;
+    }
+
+    .movie-meta {
+        font-size: 0.75rem;
+    }
+
+    .movie-overview {
+        display: none;
+    }
+
+    .main-title {
+        font-size: 1.5rem;
+    }
+
+    .subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .search-box {
+        padding: 1rem;
+        border-radius: var(--radius-lg);
+    }
+
+    .movie-poster-small {
+        width: 32px;
+        height: 48px;
+    }
+
+    .movie-poster-small i {
+        font-size: 1rem;
+    }
+
+    /* Responsive puan görünümü */
+    .movie-rating {
+        font-size: 0.8rem;
+    }
+
+    .autocomplete-rating {
+        font-size: 0.7rem;
+        padding: 1px 6px;
+    }
+}
+
+@media (max-width: 500px) {
+    .movie-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .main-title {
+        font-size: 1.3rem;
+    }
+
+    .search-input-wrapper {
+        width: 100%;
+    }
+
+    #movieInput {
+        width: 100%;
+        font-size: 1rem;
+    }
+
+    .container {
+        padding: 0 1rem 1.5rem;
+    }
+
+    .app-header {
+        padding: 1rem;
+    }
+
+    .autocomplete-item {
+        padding: 10px 14px;
+        gap: 10px;
+    }
+
+    .movie-title-small {
+        font-size: 0.85rem;
+    }
+
+    .movie-year-small {
+        font-size: 0.75rem;
+    }
+
+    /* Mobilde puan gösterimi düzenlemesi */
+    .movie-year-rating {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 6px;
+    }
+}
+
+@media (max-width: 400px) {
+    .movie-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        max-width: 280px;
+        margin: 0 auto;
+    }
+
+    .movie-card {
+        max-width: 280px;
+    }
+
+    /* Çok küçük ekranlarda otomatik tamamlama düzenlemeleri */
+    .autocomplete-item {
+        padding: 8px 12px;
+    }
+
+    .movie-meta-small {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .autocomplete-rating {
+        align-self: flex-start;
+    }
+}
